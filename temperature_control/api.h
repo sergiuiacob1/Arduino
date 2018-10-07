@@ -18,7 +18,7 @@ class Api
     Api();
     bool postData(float, float);
     String getErrorMessage() { return errorMessage; }
-    bool getTargetTemp(byte &);
+    bool getTargetTemp(float &);
 };
 
 #endif

@@ -2,7 +2,7 @@
 
 int freeMemory();
 
-void _extractTargetTempFromResponse(String, byte &);
+void _extractTargetTempFromResponse(String, float &);
 
 Api::Api()
 {
@@ -33,7 +33,7 @@ bool Api::postData(float humidityData, float celData)
     return true;
 }
 
-bool Api::getTargetTemp(byte &targetTemp)
+bool Api::getTargetTemp(float &targetTemp)
 {
     String request, response;
     int statusCode = 0;
@@ -60,7 +60,7 @@ bool Api::getTargetTemp(byte &targetTemp)
     return true;
 }
 
-void _extractTargetTempFromResponse(String response, byte &targetTemp)
+void _extractTargetTempFromResponse(String response, float &targetTemp)
 {
     const int responseLength = response.length();
     char json[responseLength + 1];
@@ -77,11 +77,14 @@ void _extractTargetTempFromResponse(String response, byte &targetTemp)
     }
     for (int i = GET_NO_RESULTS - 1; i >= 0; --i)
     {
-        int temp = root["feeds"][i]["field3"];
+        float temp = root["feeds"][i]["field3"];
         if (temp >= 10 && temp <= 30) // make sure the targetTemp is valid
         {
-            targetTemp = (byte)temp;
-            Serial.println("New target temperature has been set.");
+            if (temp != targetTemp)
+            {
+                targetTemp = temp;
+                Serial.println("New target temperature has been set.");
+            }
             break;
         }
     }

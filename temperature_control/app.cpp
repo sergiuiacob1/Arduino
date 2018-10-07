@@ -4,6 +4,8 @@
 App::App()
 {
     targetTemp = 22; // set a default of 22*C in case Arduino can't connect to the network
+    _lastAppPost = 0;
+    _lastAppUpdate = 0;
 }
 
 void App::init()
@@ -33,6 +35,9 @@ void App::connectToWifi()
 
 void App::postData()
 {
+    if (millis() - _lastAppPost < APP_POST_INTERVAL)
+        return;
+
     Serial.println("Posting data...");
     float humidity = sensor.readHumidity();
     float temperature = sensor.readTemperature();
@@ -40,18 +45,24 @@ void App::postData()
     if (isnan(humidity) || isnan(temperature))
     {
         Serial.println("Failed to read from DHT sensor!");
+        _lastAppPost = millis(); // even if it fails, don't try to read again immediately
         return;
     }
     if (api.postData(humidity, temperature))
         Serial.println("Posted data successfully!");
     else
         Serial.println("There was an error during data post: " + api.getErrorMessage());
+
+    _lastAppPost = millis();
     Serial.println("Done posting data.");
     Serial.println("");
 }
 
 void App::update()
 {
+    if (millis() - _lastAppUpdate < APP_UPDATE_INTERVAL)
+        return;
+
     Serial.println("Updating app...");
     // retrieve the target temperature using the api
     if (api.getTargetTemp(targetTemp) == false)
@@ -62,6 +73,7 @@ void App::update()
     Serial.println("Target temperature: " + (String)targetTemp);
     buttonPresser.update(targetTemp);
 
+    _lastAppUpdate = millis();
     Serial.println("Done updating app.");
     Serial.println("");
 }
