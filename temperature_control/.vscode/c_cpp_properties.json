@@ -5,7 +5,8 @@
             "includePath": [
                 "/Users/sergiuiacob/Library/Arduino15/packages/esp8266/tools/**",
                 "/Users/sergiuiacob/Library/Arduino15/packages/esp8266/hardware/esp8266/2.4.2/**",
-                "/Users/sergiuiacob/work/Arduino/libraries/**"
+                "/Users/sergiuiacob/work/Arduino/libraries/**",
+                "${workspaceRoot}"
             ],
             "forcedInclude": [],
             "macFrameworkPath": [
