@@ -1,8 +1,9 @@
 #ifndef BUTTON_PRESSER_H
 #define BUTTON_PRESSER_H
 #include <Servo.h>
+#include <cmath>
 #include "utils.h"
-#define SERVO_PIN 4 // D2 on NodeMCU
+#define SERVO_PIN 0 // D3 on NodeMCU
 #define SERVO_DECREASE_ANGLE 0
 #define SERVO_NEUTRAL_ANGLE 90
 #define SERVO_INCREASE_ANGLE 180
@@ -23,6 +24,7 @@ public:
   void init();
   /// This function presses the buttons on the thermostat
   void update(float);
+  float getThermostatTargetTemp() { return thermostatTargetTemp; }
 
 private:
   void setServo(byte);

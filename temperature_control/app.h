@@ -4,6 +4,7 @@
 #include "api.h"
 #include "sensor.h"
 #include "button_presser.h"
+#include "display.h"
 #include <EEPROM.h>
 #include <Arduino.h>
 #define APP_UPDATE_INTERVAL 10000 // update every 10 seconds
@@ -17,6 +18,7 @@ class App
     Sensor sensor;
     Api api;
     ButtonPresser buttonPresser;
+    Display display;
     /// The temperature that I wish to be in the room
     float targetTemp;
     unsigned long long int _lastAppUpdate, _lastAppPost;
@@ -26,15 +28,7 @@ class App
     void init();
     void postData();
     void update();
-
-    void test()
-    {
-        buttonPresser.update(SERVO_DECREASE_ANGLE);
-        delay(3000);
-        buttonPresser.update(90);
-        delay(3000);
-        buttonPresser.update(SERVO_INCREASE_ANGLE);
-    }
+    void showOnDisplay (float);
 
   private:
     void connectToWifi();

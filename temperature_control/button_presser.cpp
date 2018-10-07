@@ -9,12 +9,13 @@ void ButtonPresser::init()
     EEPROM.begin(512); // initialize EEPROM
     servo.attach(SERVO_PIN);
     currentServoAngle = (byte)servo.read();
-    setServo(SERVO_NEUTRAL_ANGLE); // put servo in neutral position
+    setServo(SERVO_NEUTRAL_ANGLE);                     // put servo in neutral position
     thermostatTargetTemp = readThermostatTargetTemp(); // DE MODIFICAT
 }
 
 void ButtonPresser::update(float targetTemp)
 {
+    Serial.println("Thermostat is set to: " + (String)thermostatTargetTemp);
     byte direction, steps;
     if (targetTemp == thermostatTargetTemp)
         return;
@@ -25,7 +26,8 @@ void ButtonPresser::update(float targetTemp)
         direction = DECREASE; // I have to press the decrease button on the thermostat
 
     // a press changes the temperature by 0,5 degrees
-    steps = (byte)(abs(targetTemp - thermostatTargetTemp) / (0.5)); // how many times I have to press the button
+    steps = (byte)(fabs(targetTemp - thermostatTargetTemp) / 0.5); // how many times I have to press the button
+    steps += 1;                                                    // I need to take an extra step to activate the temperature changing mode on my thermostat
 
     for (int i = 0; i < steps; ++i)
     {
@@ -33,14 +35,17 @@ void ButtonPresser::update(float targetTemp)
         if (direction == DECREASE)
         {
             setServo(SERVO_DECREASE_ANGLE);
-            thermostatTargetTemp -= 0.5;
+            if (i > 0) // the first step is just to activate the thermostat
+                thermostatTargetTemp -= 0.5;
         }
         else
         {
             setServo(SERVO_INCREASE_ANGLE);
-            thermostatTargetTemp += 0.5;
+            if (i > 0) // the first step is just to activate the thermostat
+                thermostatTargetTemp += 0.5;
         }
-        writeThermostatTargetTemp();
+        if (i > 0)
+            writeThermostatTargetTemp();
     }
 
     setServo(SERVO_NEUTRAL_ANGLE);
@@ -51,10 +56,7 @@ void ButtonPresser::setServo(byte angle)
     int i;
     // Switching "on" the servo
     pinMode(SERVO_PIN, OUTPUT);
-
-    Serial.println("Current servo angle: " + (String)currentServoAngle);
     Serial.println("Setting servo to angle: " + (String)angle);
-
     servo.write(angle);
     delay(1000); // give servo time to move;
     currentServoAngle = angle;

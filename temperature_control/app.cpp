@@ -4,8 +4,8 @@
 App::App()
 {
     targetTemp = 22; // set a default of 22*C in case Arduino can't connect to the network
-    _lastAppPost = 0;
-    _lastAppUpdate = 0;
+    _lastAppPost = APP_POST_INTERVAL;
+    _lastAppUpdate = APP_UPDATE_INTERVAL;
 }
 
 void App::init()
@@ -13,15 +13,13 @@ void App::init()
     Serial.begin(BAUD_RATE);
     this->connectToWifi();
     buttonPresser.init();
+    display.init();
 }
 
 void App::connectToWifi()
 {
-    Serial.println("Connecting to Wifi...");
-    Serial.print("Connecting to " + *SSID_NAME);
+    Serial.println("Connecting to Wifi: " + (String)SSID_NAME + "...");
     WiFi.begin(SSID_NAME, SSID_PWD);
-    Serial.println("Trying to connect to Wifi");
-
     while (WiFi.status() != WL_CONNECTED)
     {
         delay(1000);
@@ -72,8 +70,14 @@ void App::update()
     }
     Serial.println("Target temperature: " + (String)targetTemp);
     buttonPresser.update(targetTemp);
+    showOnDisplay(buttonPresser.getThermostatTargetTemp());
 
     _lastAppUpdate = millis();
     Serial.println("Done updating app.");
     Serial.println("");
+}
+
+void App::showOnDisplay(float value)
+{
+    display.showOnDisplay(value);
 }
