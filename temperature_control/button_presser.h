@@ -1,8 +1,7 @@
 #ifndef BUTTON_PRESSER_H
 #define BUTTON_PRESSER_H
-#include <Arduino.h>
 #include <Servo.h>
-#include <EEPROM.h>
+#include "utils.h"
 #define SERVO_PIN 4 // D2 on NodeMCU
 #define SERVO_DECREASE_ANGLE 0
 #define SERVO_NEUTRAL_ANGLE 90
@@ -27,7 +26,7 @@ public:
 
 private:
   void setServo(byte);
-  byte readThermostatTargetTemp();
+  float readThermostatTargetTemp();
   void writeThermostatTargetTemp();
 };
 

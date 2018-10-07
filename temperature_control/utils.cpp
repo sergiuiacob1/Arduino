@@ -1,22 +1,12 @@
 #include "utils.h"
 
-template <class T>
-int EEPROM_writeAnything(int ee, const T &value)
+int freeMemory()
 {
-    const byte *p = (const byte *)(const void *)&value;
-    unsigned int i;
-    for (i = 0; i < sizeof(value); i++)
-        EEPROM.write(ee++, *p++);
-    EEPROM.commit();
-    return i;
-}
+    int size = 100000; // Use 2048 with ATmega328
+    byte *buf;
 
-template <class T>
-int EEPROM_readAnything(int ee, T &value)
-{
-    byte *p = (byte *)(void *)&value;
-    unsigned int i;
-    for (i = 0; i < sizeof(value); i++)
-        *p++ = EEPROM.read(ee++);
-    return i;
+    while ((buf = (byte *)malloc(--size)) == NULL)
+        ;
+    free(buf);
+    return size;
 }

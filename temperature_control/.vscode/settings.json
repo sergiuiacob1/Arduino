@@ -6,6 +6,7 @@
         "string": "cpp",
         "string_view": "cpp",
         "ios": "cpp",
-        "bitset": "cpp"
+        "bitset": "cpp",
+        "__locale": "cpp"
     }
 }

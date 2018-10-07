@@ -10,7 +10,7 @@ void ButtonPresser::init()
     servo.attach(SERVO_PIN);
     currentServoAngle = (byte)servo.read();
     setServo(SERVO_NEUTRAL_ANGLE); // put servo in neutral position
-    thermostatTargetTemp = 20;     // DE MODIFICAT
+    thermostatTargetTemp = readThermostatTargetTemp(); // DE MODIFICAT
 }
 
 void ButtonPresser::update(float targetTemp)
@@ -31,13 +31,17 @@ void ButtonPresser::update(float targetTemp)
     {
         setServo(SERVO_NEUTRAL_ANGLE);
         if (direction == DECREASE)
+        {
             setServo(SERVO_DECREASE_ANGLE);
+            thermostatTargetTemp -= 0.5;
+        }
         else
+        {
             setServo(SERVO_INCREASE_ANGLE);
+            thermostatTargetTemp += 0.5;
+        }
+        writeThermostatTargetTemp();
     }
-
-    thermostatTargetTemp = targetTemp;
-    // write to eeprom!!!
 
     setServo(SERVO_NEUTRAL_ANGLE);
 }
@@ -58,11 +62,11 @@ void ButtonPresser::setServo(byte angle)
     pinMode(SERVO_PIN, INPUT);
 }
 
-byte ButtonPresser::readThermostatTargetTemp()
+float ButtonPresser::readThermostatTargetTemp()
 {
-    byte result;
+    float result;
     Serial.println("Reading from EEPROM...");
-    result = EEPROM.read(0);
+    EEPROM_readAnything(0, result);
     Serial.println("Read the value: " + (String)result);
     Serial.println("Done reading from EEPROM.");
     return result;
@@ -71,7 +75,6 @@ byte ButtonPresser::readThermostatTargetTemp()
 void ButtonPresser::writeThermostatTargetTemp()
 {
     Serial.println("Writing into EEPROM...");
-    EEPROM.write(0, thermostatTargetTemp);
-    EEPROM.commit();
+    EEPROM_writeAnything(0, thermostatTargetTemp);
     Serial.println("Done writing into EEPROM");
 }

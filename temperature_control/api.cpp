@@ -1,7 +1,5 @@
 #include "api.h"
 
-int freeMemory();
-
 void _extractTargetTempFromResponse(String, float &);
 
 Api::Api()
@@ -88,15 +86,4 @@ void _extractTargetTempFromResponse(String response, float &targetTemp)
             break;
         }
     }
-}
-
-int freeMemory()
-{
-    int size = 100000; // Use 2048 with ATmega328
-    byte *buf;
-
-    while ((buf = (byte *)malloc(--size)) == NULL)
-        ;
-    free(buf);
-    return size;
 }
