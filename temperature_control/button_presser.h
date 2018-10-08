@@ -3,10 +3,11 @@
 #include <Servo.h>
 #include <cmath>
 #include "utils.h"
+#include "display.h"
 #define SERVO_PIN 0 // D3 on NodeMCU
-#define SERVO_DECREASE_ANGLE 0
+#define SERVO_DECREASE_ANGLE 20
 #define SERVO_NEUTRAL_ANGLE 90
-#define SERVO_INCREASE_ANGLE 180
+#define SERVO_INCREASE_ANGLE 160
 #define DECREASE 0
 #define INCREASE 1
 
@@ -23,7 +24,7 @@ public:
   ButtonPresser();
   void init();
   /// This function presses the buttons on the thermostat
-  void update(float);
+  void update(float, Display &);
   float getThermostatTargetTemp() { return thermostatTargetTemp; }
 
 private:

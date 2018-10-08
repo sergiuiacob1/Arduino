@@ -13,7 +13,7 @@ void ButtonPresser::init()
     thermostatTargetTemp = readThermostatTargetTemp(); // DE MODIFICAT
 }
 
-void ButtonPresser::update(float targetTemp)
+void ButtonPresser::update(float targetTemp, Display &display)
 {
     Serial.println("Thermostat is set to: " + (String)thermostatTargetTemp);
     byte direction, steps;
@@ -45,7 +45,10 @@ void ButtonPresser::update(float targetTemp)
                 thermostatTargetTemp += 0.5;
         }
         if (i > 0)
+        {
             writeThermostatTargetTemp();
+            display.showOnDisplay(thermostatTargetTemp);
+        }
     }
 
     setServo(SERVO_NEUTRAL_ANGLE);

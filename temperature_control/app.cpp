@@ -14,6 +14,7 @@ void App::init()
     this->connectToWifi();
     buttonPresser.init();
     display.init();
+    display.showOnDisplay(buttonPresser.getThermostatTargetTemp());
 }
 
 void App::connectToWifi()
@@ -46,7 +47,7 @@ void App::postData()
         _lastAppPost = millis(); // even if it fails, don't try to read again immediately
         return;
     }
-    if (api.postData(humidity, temperature))
+    if (api.postData(humidity, temperature, buttonPresser.getThermostatTargetTemp()))
         Serial.println("Posted data successfully!");
     else
         Serial.println("There was an error during data post: " + api.getErrorMessage());
@@ -69,7 +70,7 @@ void App::update()
         return;
     }
     Serial.println("Target temperature: " + (String)targetTemp);
-    buttonPresser.update(targetTemp);
+    buttonPresser.update(targetTemp, display);
     showOnDisplay(buttonPresser.getThermostatTargetTemp());
 
     _lastAppUpdate = millis();

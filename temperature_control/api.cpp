@@ -7,12 +7,13 @@ Api::Api()
     errorMessage = "";
 }
 
-bool Api::postData(float humidityData, float celData)
+bool Api::postData(float humidityData, float celData, float thermostatTargetTemp)
 {
     String request, response;
     int statusCode = 0;
 
-    request = "/update?api_key=" + (String)THINGSPEAK_API_KEY + (String) "&field1=" + (String)humidityData + "&field2=" + (String)celData;
+    request = "/update?api_key=" + (String)THINGSPEAK_API_KEY + (String) "&field1=" + (String)humidityData +
+              "&field2=" + (String)celData + "&field3=" + (String)thermostatTargetTemp;
     Serial.println(request);
 
     HttpClient client = HttpClient(wifi, "api.thingspeak.com", 80);

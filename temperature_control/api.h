@@ -16,7 +16,7 @@ class Api
 
   public:
     Api();
-    bool postData(float, float);
+    bool postData(float, float, float);
     String getErrorMessage() { return errorMessage; }
     bool getTargetTemp(float &);
 };
