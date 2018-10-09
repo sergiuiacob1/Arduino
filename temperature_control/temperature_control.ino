@@ -9,7 +9,7 @@ void setup()
 
 void loop()
 {
-  if (app.isConnectedToWifi() == false)
+  if (app.isConnectedToWifi() == false) // in case the ESP8266 disconnected
   {
     app.connectToWifi();
     return;
