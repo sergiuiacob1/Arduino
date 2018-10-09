@@ -7,7 +7,7 @@
 #include "display.h"
 #include <EEPROM.h>
 #include <Arduino.h>
-#define APP_UPDATE_INTERVAL 10000 // update every 10 seconds
+#define APP_UPDATE_INTERVAL 30 // update every 30 seconds
 #define APP_POST_INTERVAL 120000  // post data every 2 minutes
 
 /// The main project
