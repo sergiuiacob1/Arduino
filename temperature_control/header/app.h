@@ -29,7 +29,7 @@ public:
   void postData();
   void update();
   void showOnDisplay(float);
-  bool isConnectedToWifi() { return Wifi.status() == WL_CONNECTED; }
+  bool isConnectedToWifi() { return WiFi.status() == WL_CONNECTED; }
   void connectToWifi();
 
 private:
