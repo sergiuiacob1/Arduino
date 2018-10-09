@@ -8,32 +8,33 @@
 #include <EEPROM.h>
 #include <Arduino.h>
 #define APP_UPDATE_INTERVAL 10000 // update every 10 seconds
-#define APP_POST_INTERVAL 120000   // post data every 2 minutes
+#define APP_POST_INTERVAL 120000  // post data every 2 minutes
 
 /// The main project
 /// I control everything using this class
 class App
 {
-  private:
-    Sensor sensor;
-    Api api;
-    ButtonPresser buttonPresser;
-    Display display;
-    /// The temperature that I wish to be in the room
-    float targetTemp;
-    unsigned long long int _lastAppUpdate, _lastAppPost;
+private:
+  Sensor sensor;
+  Api api;
+  ButtonPresser buttonPresser;
+  Display display;
+  /// The temperature that I wish to be in the room
+  float targetTemp;
+  unsigned long long int _lastAppUpdate, _lastAppPost;
 
-  public:
-    App();
-    void init();
-    void postData();
-    void update();
-    void showOnDisplay (float);
+public:
+  App();
+  void init();
+  void postData();
+  void update();
+  void showOnDisplay(float);
+  bool isConnectedToWifi() { return Wifi.status() == WL_CONNECTED; }
+  void connectToWifi();
 
-  private:
-    void connectToWifi();
-    float readHumidity() { return sensor.readHumidity(); }
-    float readTemperature() { return sensor.readTemperature(); }
+private:
+  float readHumidity() { return sensor.readHumidity(); }
+  float readTemperature() { return sensor.readTemperature(); }
 };
 
 #endif

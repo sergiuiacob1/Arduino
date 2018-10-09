@@ -10,7 +10,7 @@ void ButtonPresser::init()
     servo.attach(SERVO_PIN);
     currentServoAngle = (byte)servo.read();
     setServo(SERVO_NEUTRAL_ANGLE);                     // put servo in neutral position
-    thermostatTargetTemp = readThermostatTargetTemp(); // DE MODIFICAT
+    thermostatTargetTemp = readThermostatTargetTemp();
 }
 
 void ButtonPresser::update(float targetTemp, Display &display)
